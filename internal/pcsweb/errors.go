@@ -5,14 +5,31 @@ import (
 	"github.com/json-iterator/go"
 )
 
+const (
+	// ErrnoSuccess 成功
+	ErrnoSuccess int = iota
+	// ErrnoAuthError 验证错误
+	ErrnoAuthError
+	// ErrnoPCSAPIError pcs api 错误
+	ErrnoPCSAPIError
+)
+
 // ErrInfo web 错误详情
 type ErrInfo struct {
-	ErrroCode int    `json:"error_code"`
-	ErrorMsg  string `json:"error_msg"`
+	Errno int    `json:"errno"`
+	Msg   string `json:"msg"`
+}
+
+// NewErrInfo 初始化错误信息
+func NewErrInfo(errno int, msg string) *ErrInfo {
+	return &ErrInfo{
+		Errno: errno,
+		Msg:   msg,
+	}
 }
 
 func (ei *ErrInfo) Error() string {
-	return fmt.Sprintf("error code: %d, error message: %s", ei.ErrroCode, ei.ErrorMsg)
+	return fmt.Sprintf("errno: %d, msg: %s", ei.Errno, ei.Msg)
 }
 
 // JSON 将错误信息打包成 json

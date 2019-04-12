@@ -28,6 +28,8 @@ type pcsConfigJSONExport struct {
 	EnableHTTPS bool   `json:"enable_https"` // 启用https
 	Proxy       string `json:"proxy"`        // 代理
 	LocalAddrs  string `json:"local_addrs"`
+
+	WebConfig WebConfig `json:"web_config"`
 }
 
 // ActiveUser 获取当前登录的用户
@@ -122,6 +124,11 @@ func (c *PCSConfig) Proxy() string {
 // LocalAddrs 返回localAddrs
 func (c *PCSConfig) LocalAddrs() string {
 	return c.localAddrs
+}
+
+// WebConfig 返回WebConfig
+func (c *PCSConfig) WebConfig() *WebConfig {
+	return &c.webConfig
 }
 
 // AverageParallel 返回平均的下载最大并发量

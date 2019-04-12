@@ -46,6 +46,8 @@ type PCSConfig struct {
 	proxy             string // 代理
 	localAddrs        string // 本地网卡地址
 
+	webConfig WebConfig // 网页端配置
+
 	configFilePath string
 	configFile     *os.File
 	fileMu         sync.Mutex
@@ -217,6 +219,9 @@ func (c *PCSConfig) initDefaultConfig() {
 	c.maxUploadParallel = 10
 	c.maxDownloadLoad = 1
 	c.userAgent = "netdisk;8.3.1;android-android"
+	c.webConfig = WebConfig{
+		Addr: "0.0.0.0:4203",
+	}
 
 	// 设置默认的下载路径
 	switch runtime.GOOS {

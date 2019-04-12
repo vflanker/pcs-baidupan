@@ -323,15 +323,23 @@ func main() {
 			Category: "其他",
 			Before:   reloadFn,
 			Action: func(c *cli.Context) error {
-				fmt.Printf("web 客户端功能为实验性功能, 测试中, 打开 http://localhost:%d 查看效果\n", c.Uint("port"))
-				fmt.Println(pcsweb.StartServer(c.Uint("port")))
+				var addr string
+				if c.IsSet("addr") {
+					addr = c.String("addr")
+				} else {
+					addr = pcsconfig.Config.WebConfig().Addr
+				}
+				fmt.Printf("web 客户端功能为实验性功能, 测试中, 打开 http://%s 查看效果\n", addr)
+				pw := pcsweb.New()
+				pw.SetAddr(addr)
+				fmt.Println(pw.Serve())
 				return nil
 			},
 			Flags: []cli.Flag{
-				cli.UintFlag{
-					Name:  "port",
-					Usage: "自定义端口",
-					Value: 8080,
+				cli.StringFlag{
+					Name:  "addr",
+					Usage: "web 客户端监听地址",
+					Value: "",
 				},
 			},
 		},
